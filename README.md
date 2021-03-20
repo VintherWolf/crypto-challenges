@@ -1,6 +1,6 @@
 This Collection is setup by invoking the pipfile
 
-''' bash
+``` bash
 # install pipenv
 $ pip install pipenv
 
@@ -9,4 +9,4 @@ $ pipenv install
 
 # activate env
 $ pipenv shell
-'''
+```
