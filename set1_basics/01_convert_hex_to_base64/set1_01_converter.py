@@ -11,7 +11,6 @@ from base64 import b64encode
 
 class Converter(object):
 
-    encoding_format = 'utf-8'
     output_base64 = ''
 
     def __init__(self, s_hex=''):
