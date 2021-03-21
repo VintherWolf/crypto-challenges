@@ -46,16 +46,16 @@ class Converter(object):
         """
         self.s1 = b_hex1
         self.s2 = b_hex2
-        self.__make_inputs_equal_lenghts()
+        self.__make_inputs_equal_lengths()
         self.__byte_xor()
 
-    def __make_inputs_equal_lenghts(self):
+    def __make_inputs_equal_lengths(self):
         self.s1_len = len(self.s1)
         self.s2_len = len(self.s2)
 
         while self.__inputs_are_not_same_length():
             self.__add_padding()
-            self.__recalculate_lenghts()
+            self.__recalculate_lengths()
 
     def __inputs_are_not_same_length(self):
         return self.s1_len != self.s2_len
@@ -67,7 +67,7 @@ class Converter(object):
         else:
             self.s1 += padding
 
-    def __recalculate_lenghts(self):
+    def __recalculate_lengths(self):
         self.s1_len = len(self.s1)
         self.s2_len = len(self.s2)
 
