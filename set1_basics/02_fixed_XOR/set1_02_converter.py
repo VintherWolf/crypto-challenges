@@ -33,10 +33,11 @@ class Converter(object):
         """
         self.bytes_s_hex = bytes.fromhex(s_hex)
 
+    # region XOR
     def produce_xor(self, b_hex1, b_hex2):
         """
-        Takes to hex formatted byte strings to produce their XOR value to obj.output.xor
-        If they are not equal lengts, then the shortest one will be padded with 0'es
+        Takes two hex formatted byte strings to produce their XOR value to obj.output.xor
+        If they are not equal lengths, then the shortest one will be padded with 0'es
 
         :param b_hex1: hex string
         :type b_hex1: bytes
@@ -74,3 +75,4 @@ class Converter(object):
         self.s1 = int(self.s1, 16)
         self.s2 = int(self.s2, 16)
         self.output_xor = hex(self.s1 ^ self.s2)[2:].encode()
+    # endregion XOR
