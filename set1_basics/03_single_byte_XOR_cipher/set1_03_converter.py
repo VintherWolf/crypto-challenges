@@ -97,7 +97,7 @@ class Converter(object):
         if rating > self.highest_plain_text_rating:
             self.highest_plain_text_rating = rating
             self.best_rated_plain_text = self.output_plain
-            self.best_rated_plain_text_key = self.tried_key
+            self.best_rated_plain_text_key = self.used_key
 
         self.plain_text_rating = rating
 
@@ -118,10 +118,10 @@ class Converter(object):
         self.s2 = b_hex2
 
         if type(self.s1) is int:
-            self.__singlebyte_xor(self.s2, self.s1)
+            self.__onebyte_key_xor(self.s2, self.s1)
 
         elif type(self.s2) is int:
-            self.__singlebyte_xor(self.s1, self.s2)
+            self.__onebyte_key_xor(self.s1, self.s2)
 
         else:
             self.s1_len = len(self.s1)
@@ -131,30 +131,27 @@ class Converter(object):
                 print("Inputs are not equal length")
                 return 0
             else:
-                self.__byte_xor()
+                self.__equal_length_bytes_xor()
 
     def __inputs_are_not_same_length(self):
         return self.s1_len != self.s2_len
 
-    def __byte_xor(self):
+    def __equal_length_bytes_xor(self):
         self.s1 = int(self.s1, 16)
         self.s2 = int(self.s2, 16)
-        self.output_xor = hex(self.s1 ^ self.s2)[2:].encode()
+        bytes_hex = hex(self.s1 ^ self.s2)[2:]
+        self.output_xor = bytes_hex.encode()
+        self.__decode_hex_to_plaintext(bytes.fromhex(bytes_hex))
 
-    def __singlebyte_xor(self, b_input, key):
-        self.tried_key = key
+    def __onebyte_key_xor(self, b_input, key):
+        self.used_key = key
         output = b''
         for char in b_input:
             output += bytes([char ^ key])
 
-        self.output_plain = output.decode("utf-8")
+        self.__decode_hex_to_plaintext(output)
 
     # endregion XOR
 
-    def decode_hex_xor(self):
-
-        try:
-            decoded_bytes = bytes.fromhex(self.output_xor.decode())
-            self.output_plain = decoded_bytes.decode("utf-8")
-        except:
-            pass
+    def __decode_hex_to_plaintext(self, b_hex):
+        self.output_plain = b_hex.decode("utf-8")

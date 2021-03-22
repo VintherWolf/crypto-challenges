@@ -42,7 +42,6 @@ class ConverterTest(unittest.TestCase):
         try_key = b'a'
         # Act
         self._uut.produce_xor(input_string, compare_string)
-        self._uut.decode_hex_xor()
 
         # Assert
         self.assertEqual(self._uut.output_plain, expected_plain_output)
