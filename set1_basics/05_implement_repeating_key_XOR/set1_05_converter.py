@@ -34,7 +34,7 @@ MOST_COMMON_WORDS = {
 class Converter(object):
 
     output_base64 = b''
-    output_xor = b''
+    output_xor = b' '
     output_plain = ''
 
     plain_text_rating = 0.0
@@ -56,10 +56,6 @@ class Converter(object):
         Available at obj.output_base64
         """
         self.output_base64 = b64encode(self.bytes_s_hex)
-
-    def load_plain_string(self, s_plain):
-        
-        self.bytes_s_hex = bytes.fromhex(s_hex)
 
     def load_hex_string(self, s_hex):
         """
@@ -86,6 +82,8 @@ class Converter(object):
             raise
         print('Total Attempts: %d' % self.total_attempts)
         print("Lines in File: ", self.lines_in_file)
+        self.lines_in_file = 0
+        self.total_attempts = 0
 
     def atoz_singlechar_brute_force(self, input_bytes_string):
         # for char in range(ord('A'), ord('z')+1):
@@ -187,3 +185,21 @@ class Converter(object):
 
     def __decode_hex_to_plaintext(self, b_hex):
         self.output_plain = b_hex.decode('utf-8', 'ignore').strip()
+
+    def encrypt_with_repeating_key_xor(self, plain_text, key):
+        keylen = len(key)
+        output = b''
+        key_idx = 0
+
+        if keylen < 1:
+            print("Encrypt Failed: Key must be at least one char long!")
+            return 0
+
+        for plain_idx, char in enumerate(plain_text):
+            output += bytes([ord(char) ^ ord(key[key_idx])])
+
+            key_idx += 1
+            if key_idx % keylen == 0:
+                key_idx = 0
+
+        self.output_xor = output.hex().strip()
