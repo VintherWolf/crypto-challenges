@@ -10,7 +10,7 @@ import string
 from pathlib import Path
 from base64 import b64encode
 
-# Values resambles those from
+# Values resembles those from
 # source: https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html
 MOST_FREQUENT_LETTERS = {
     'e':    0.11,   'a':    0.085, 'r':  0.075,
