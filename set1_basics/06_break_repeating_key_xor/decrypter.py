@@ -18,7 +18,7 @@ class Decrypter(object):
     def compute_hamming_distance(self, s1, s2):
 
         if len(s1) != len(s2):
-            print("Strings are must be equal lengths")
+            print("Strings must be equal lengths")
             return 0
 
         hamming_count = 0
