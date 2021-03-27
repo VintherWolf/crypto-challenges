@@ -1,11 +1,17 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+'''
+    Author:         Daniel K. Vinther Wolf
+    Created:        20-03-2021
+    Description:
+    Dependencies:
+    Pre-Requisites:
+'''
+
 from __future__ import absolute_import
 
 import unittest
 
-import decrypter
-
+from .decrypter import Decrypter
 from .set1_06_converter import Converter
 from .set1_06_testdata import input_hex_string, expected_base64
 from .set1_06_testdata import input_string, compare_string, expected_output
@@ -19,16 +25,18 @@ class ConverterTest(unittest.TestCase):
         # Arrange
         pass  # nop
 
-    def test_compute_hamming_distance_DistanceIsCorrectValue(self):
+    def test_ComputeHammingDistance_DistanceIsCorrectValue(self):
         # Arrange
-        self._uut = decrypter()
+        self._uut = Decrypter()
+        test_string1 = 'this is a test'
+        test_string2 = 'wokka wokka!!!'
 
         # Act
-        self._uut.encrypt_with_repeating_key_xor(plain_text, "ICE")
+        self._uut.compute_hamming_distance(test_string1, test_string2)
 
         # Assert
-        self.assertEqual(self._uut.output_xor,
-                         ecrypted_string)
+        self.assertEqual(self._uut.hamming_distance,
+                         37)
 
 
 if __name__ == '__main__':
