@@ -4,11 +4,13 @@ from __future__ import absolute_import
 
 import unittest
 
-from .set1_05_converter import Converter
-from .set1_05_testdata import input_hex_string, expected_base64
-from .set1_05_testdata import input_string, compare_string, expected_output
-from .set1_05_testdata import xored_string_unknown_key, expected_plain_output, testoutput
-from .set1_05_testdata import plain_text, ecrypted_string
+import decrypter
+
+from .encrypter import Encrypter
+from .encrypter_testdata import input_hex_string, expected_base64
+from .encrypter_testdata import input_string, compare_string, expected_output
+from .encrypter_testdata import xored_string_unknown_key, expected_plain_output, testoutput
+from .encrypter_testdata import plain_text, ecrypted_string
 
 
 class ConverterTest(unittest.TestCase):
@@ -17,9 +19,9 @@ class ConverterTest(unittest.TestCase):
         # Arrange
         pass  # nop
 
-    def test_EncryptText_OutputIsCorrectEncryptionString(self):
+    def test_compute_hamming_distance_DistanceIsCorrectValue(self):
         # Arrange
-        self._uut = Converter()
+        self._uut = decrypter()
 
         # Act
         self._uut.encrypt_with_repeating_key_xor(plain_text, "ICE")
