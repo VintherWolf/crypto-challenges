@@ -1,34 +1,34 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
+#!/usr/bin/env python
+'''
+    Author:         Daniel K. Vinther Wolf
+    Created:        01-04-2021
+    Description:
+    Dependencies:
+    Pre-Requisites:
+'''
 import unittest
 
-import decrypter
-
-from .encrypter import Encrypter
-from .encrypter_testdata import input_hex_string, expected_base64
-from .encrypter_testdata import input_string, compare_string, expected_output
-from .encrypter_testdata import xored_string_unknown_key, expected_plain_output, testoutput
-from .encrypter_testdata import plain_text, ecrypted_string
+from encrypter import Encrypter
 
 
 class ConverterTest(unittest.TestCase):
 
     def setUp(self):
         # Arrange
-        pass  # nop
+        self._uut = Encrypter()
 
-    def test_compute_hamming_distance_DistanceIsCorrectValue(self):
+    def test_RepeatingKeyXOr_ValidInput_CorrectCipherText(self):
         # Arrange
-        self._uut = decrypter()
-
+        test_string = '''Burning 'em, if you ain't quick and nimble
+I go crazy when I hear a cymbal'''
+        test_key = 'ICE'
+        result = ''
+        expected_result = '0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f'
         # Act
-        self._uut.encrypt_with_repeating_key_xor(plain_text, "ICE")
+        result = self._uut.encrypt_xor_repeating_key(test_string, test_key)
 
         # Assert
-        self.assertEqual(self._uut.output_xor,
-                         ecrypted_string)
+        self.assertEqual(result, expected_result)
 
 
 if __name__ == '__main__':

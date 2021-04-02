@@ -33,9 +33,34 @@ set1_04_input_data = '0e3647e8592d35514a081243582536ed3de6734059001e3f535ce62710
 set1_04_expected_result = 'Now that the party is jumping'
 
 # ====================================
-# 05
+# 05    Repeating-key XOR (Encrypt)
 # ====================================
 # Input
-set1_05_input_data = ''
+set1_05_input_data = '''Burning 'em, if you ain't quick and nimble
+I go crazy when I hear a cymbal'''
 # Expected output
-set1_05_expected_result = ''
+set1_05_expected_result = '0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f'
+
+# ====================================
+# 06    Break Repeating-key XOR (Decrypt)
+# ====================================
+# Input
+set1_06_input_data = ''
+# Expected output
+set1_06_expected_result = ''
+
+# ====================================
+# 07    AES in ECB mode
+# ====================================
+# Input
+set1_07_input_data = ''
+# Expected output
+set1_07_expected_result = ''
+
+# ====================================
+# 08    Detect AES in ECB mode
+# ====================================
+# Input
+set1_08_input_data = ''
+# Expected output
+set1_08_expected_result = ''
