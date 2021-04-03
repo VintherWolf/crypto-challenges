@@ -26,6 +26,18 @@ class FileHandler(object):
             print(ex)
             raise
 
+    def load_cipher_text_as_bytes_from_file(self, filename):
+        cipher_textfile = self.__set_absolute_path(filename)
+        try:
+            with open(cipher_textfile, 'r') as cipher_text:
+                cipher = cipher_text.read()
+                return cipher.encode()
+
+        except FileNotFoundError as ex:
+            print("[FileHandler] Error: %s Not Found" % cipher_textfile)
+            print(ex)
+            raise
+
     # ==========================================
     # Aggregate Methods
     # ==========================================

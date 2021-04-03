@@ -66,7 +66,7 @@ class DecrypterTest(unittest.TestCase):
         # Arrange
         test_text = b'this text is awesome, that\'s what she said'
         test_text2 = 'THIS TEXT IS AWESOME, ThAT\'S WhAt sHe sAId'
-        expected_rating = 4.0
+        expected_rating = 4.49
         result = 0
 
         # Act

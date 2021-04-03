@@ -45,9 +45,9 @@ set1_05_expected_result = '0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d633
 # 06    Break Repeating-key XOR (Decrypt)
 # ====================================
 # Input
-set1_06_input_data = ''
+# File: 'set1_06_cipher.txt'
 # Expected output
-set1_06_expected_result = ''
+set1_06_expected_result = 'Terminator X: Bring the noise'
 
 # ====================================
 # 07    AES in ECB mode

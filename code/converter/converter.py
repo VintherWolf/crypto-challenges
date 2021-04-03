@@ -6,7 +6,7 @@
     Dependencies:
     Pre-Requisites:
 '''
-from base64 import b64encode
+from base64 import b64encode, b64decode
 
 
 class Converter(object):
@@ -63,6 +63,13 @@ class Converter(object):
             output += hex(ord(char))[2:]
 
         return output.encode()
+
+    # ==========================================
+    # Base64 as Input, Methods
+    # ==========================================
+
+    def convert_base64_to_string_bytes(self, b64):
+        return b64decode(b64)
 
     # ==========================================
     # Aggregate Methods

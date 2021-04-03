@@ -97,6 +97,21 @@ class ConverterTest(unittest.TestCase):
 
     # endregion Convert_Hex_bytes_to_String_bytes
 
+    # region Convert_Base64_to_String_bytes
+
+    def test_ConvertHexToStringBytes_ValidHexBytesWithoutHexPrefix_CorrectStringBytes(self):
+        # Arrange
+        test_b64 = b'SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t'
+        expected_result = b'I\'m killing your brain like a poisonous mushroom'
+
+        # Act
+        result = self._uut.convert_base64_to_string_bytes(test_b64)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    # endregion Convert_Base64_to_Hex_bytes
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -48,6 +48,8 @@ class Decrypter(object):
         for char in text:
             if char in normal_chars:
                 rating += MOST_FREQUENT_LETTERS.get(char.lower(), 0)
+            if char in WIERD_LETTERS:
+                rating += WIERD_LETTERS.get(char.lower(), 0)
 
         for word in COMMON_WORDS:
             if word in text.lower():
@@ -152,8 +154,16 @@ MOST_FREQUENT_LETTERS = {
     'g':    0.025,  'b':    0.021,  'f':    0.018,
     'y':    0.018,  'w':    0.013,  'k':    0.011,
     'v':    0.010,  'x':    0.002,  'z':    0.002,
-    'j':    0.002,  'q':    0.002,  ' ':    0.05
+    'j':    0.002,  'q':    0.002,  ' ':    0.12
 }
+
+
+WIERD_LETTERS = {
+    '<': -0.3,   '>': -0.3, '&': -0.2,
+    '\\': -0.3,  '/': -0.3,  '+': -0.3,
+    '"': -0.3
+}
+
 
 # 0.2 value per letter in word (subjective measure)
 # Max: 3.6

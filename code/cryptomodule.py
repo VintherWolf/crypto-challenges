@@ -7,6 +7,8 @@
     Pre-Requisites:
 '''
 
+from itertools import combinations
+
 from converter.converter import Converter
 from decrypter.decrypter import Decrypter
 from encrypter.encrypter import Encrypter
@@ -19,11 +21,20 @@ class CryptoModule(Converter, Decrypter, Encrypter, FileHandler):
         super()
 
     def singlechar_brute_force(self, data):
-        """
+        """singlechar_brute_force
+
         Execute brute force decryption on data (hex-formated cipher in bytes)
         with a single ASCII char at a time
         from 0 to 255 (see https://www.ascii-code.com/)
         data must be bytes.fromhex formatted (b'.\xf0\xf1\xf2')
+
+        :param data: bytes
+
+        :type data: [ int | chr | float | str ]
+
+        :return: [ 0:dec | 1:char | 2:rating | 3:plainText ]
+
+        :rtype: list
         """
         xor_produced_text = b''
         rating = 0
@@ -66,3 +77,81 @@ class CryptoModule(Converter, Decrypter, Encrypter, FileHandler):
         best_rating_text = sorted(
             best_rating_text, key=lambda best: best[1], reverse=True)[:3]
         return best_rating_text
+
+    def break_repeating_key_xor(self, cipher):
+        """break_repeating_key_xor [summary]
+
+        :param cipher: cipher text
+
+        :type cipher: Bytes
+
+        :return: [key, rating, text]
+
+        :rtype: Bytes
+        """
+        key_ranking = [[100, 100]]*5
+        output_array = []
+
+        cipherlen = len(cipher)
+
+        # Try the keys on a relative long part of the cipher text
+        patch_of_cipher = int(round(cipherlen / 4.25, 0))
+
+        for key in range(2, patch_of_cipher):
+            acum_distance = 0
+            chunks = []
+
+            chunks.append(cipher[0:key])
+            chunks.append(cipher[key:2*key])
+            chunks.append(cipher[2*key:3*key])
+            chunks.append(cipher[3*key:4*key])
+
+            # Possible combinations is saved in bins
+            # ABCD = AB, AC, AD, BC, BD, CD (hence: there is 6 bins in total)
+            bins = combinations(chunks, 2)
+            num_of_bins = 6
+
+            for (a, b) in bins:
+                # Compute Hamming Distance
+                acum_distance = self.compute_hamming_distance(a, b)
+
+            avg_distance = acum_distance / num_of_bins
+
+            # Normalize Hamming distance
+            nom_distance = round(avg_distance / key, 2)
+
+            key_ranking.append([key, nom_distance])
+
+        # Key Sizes to try-out: key_ranking[0-2][dont care]
+        key_ranking = sorted(key_ranking, key=lambda k: k[1])[:3]
+
+        for row in key_ranking:
+            key_size = (row)[0]
+            tried_key = b''
+
+            # Only try the Key (int) not the nom_distance (float) from the 2d-array
+            if type(key_size) is int:
+                for length in range(key_size):
+                    block = b''
+
+                    for nblock in range(length, cipherlen, key_size):
+                        block += bytes([cipher[nblock]])
+
+                    key_text = []
+                    key_text = self.singlechar_brute_force(block)
+                    tried_key += ((key_text)[0][1]).encode()
+
+                plain_text = self.encrypt_repeating_key_xor_plain(
+                    cipher, tried_key)
+
+                rating = self.rate_text(plain_text)
+
+                output_array.append(
+                    [tried_key, rating, plain_text])
+
+                output_array = sorted(
+                    output_array, key=lambda k: k[1], reverse=True)
+            else:
+                continue
+
+        return output_array
