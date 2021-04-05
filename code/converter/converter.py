@@ -65,10 +65,20 @@ class Converter(object):
         return output.encode()
 
     # ==========================================
+    # Pretty Print, Methods
+    # ==========================================
+
+    def convert_bytes_to_pretty_string_output(self, data):
+        return data.decode().rstrip()
+    
+    def convert_bytes_to_pretty_print(self, data):
+        print(data.decode().rstrip())
+
+    # ==========================================
     # Base64 as Input, Methods
     # ==========================================
 
-    def convert_base64_to_string_bytes(self, b64):
+    def convert_base64_to_bytes(self, b64):
         return b64decode(b64)
 
     # ==========================================

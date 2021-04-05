@@ -12,7 +12,7 @@ from set1_testdata import set1_04_expected_result
 
 cm = CryptoModule()
 
-set1_04_input_data = cm.load_cipher_text_from_file('set1_04_cipher.txt')
+set1_04_input_data = cm.read_file('set1_04_cipher.txt')
 output = []
 
 output = cm.detect_encryption_by_singlechar_brute_force(set1_04_input_data)

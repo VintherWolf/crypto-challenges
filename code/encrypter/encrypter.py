@@ -6,7 +6,8 @@
     Dependencies:
     Pre-Requisites:
 '''
-
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
 
 class Encrypter(object):
 
@@ -17,6 +18,8 @@ class Encrypter(object):
 
         keylen = len(key)
         output = b''
+        text = self.encode_if_needed(text)
+        key = self.encode_if_needed(key)
 
         if keylen < 1:
             print(
@@ -37,6 +40,8 @@ class Encrypter(object):
 
         keylen = len(key)
         output = b''
+        text = self.encode_if_needed(text)
+        key = self.encode_if_needed(key)
 
         if keylen < 1:
             print(
@@ -52,3 +57,23 @@ class Encrypter(object):
                 i = 0
 
         return output
+
+    # ==========================================
+    # AES ECB Mode
+    # ==========================================
+
+    def encrypt_aes_128b_ecb_mode(self, data, key):
+        cipher = AES.new(key, AES.MODE_ECB)
+        # Add padding as described in at link:
+        # https://www.pycryptodome.org/en/latest/src/cipher/classic.html#ecb-mode
+        return cipher.encrypt(pad(data, AES.block_size))
+
+    # ==========================================
+    # Aggregate Methods
+    # ==========================================
+
+    def encode_if_needed(self, input_data):
+        if type(input_data) is str:
+            return input_data.encode()
+        else:
+            return input_data

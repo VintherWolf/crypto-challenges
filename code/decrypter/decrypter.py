@@ -6,7 +6,10 @@
     Dependencies:
     Pre-Requisites:
 '''
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
 from string import ascii_letters
+from binascii import unhexlify, hexlify
 
 
 class Decrypter(object):
@@ -57,6 +60,10 @@ class Decrypter(object):
 
         return round(rating, 2)
 
+    # ==========================================
+    # Simple XOR Decryption
+    # ==========================================
+
     def singlebyte_xor(self, data, key):
         """
         Each byte in data is XOR'ed with the key
@@ -92,6 +99,29 @@ class Decrypter(object):
             output = hex(data_in1 ^ data_in2)[2:].encode()
 
         return output
+
+    # ==========================================
+    # AES ECB Mode
+    # ==========================================
+
+    def decrypt_aes_128b_ecb(self, cipher, key):
+        """ 
+        Returns a '16 Bytes key' decrypted ECB cipher
+        Read more at https://pycryptodome.readthedocs.io/en/latest/src/cipher/classic.html
+        :return: ECB cipher object
+        :rtype: object
+        """
+        decipher = AES.new(key, AES.MODE_ECB)
+        plain_text = b''
+
+        try:
+            plain_text = unpad(decipher.decrypt(cipher), AES.block_size)
+        except ValueError:
+            print("[Decrypter] AES ECB Mode: Value/Text Error")
+        except KeyError:
+            print("[Decrypter] AES ECB Mode: Key Error")
+
+        return plain_text
 
     # ==========================================
     # Aggregate Methods
@@ -154,7 +184,7 @@ MOST_FREQUENT_LETTERS = {
     'g':    0.025,  'b':    0.021,  'f':    0.018,
     'y':    0.018,  'w':    0.013,  'k':    0.011,
     'v':    0.010,  'x':    0.002,  'z':    0.002,
-    'j':    0.002,  'q':    0.002,  ' ':    0.12
+    'j':    0.002,  'q':    0.002,  ' ':    0.05
 }
 
 

@@ -15,7 +15,7 @@ class FileHandler(object):
     def __init__(self):
         pass
 
-    def load_cipher_text_from_file(self, filename):
+    def read_file(self, filename):
         cipher_textfile = self.__set_absolute_path(filename)
         try:
             with open(cipher_textfile, 'r') as cipher_text:
@@ -26,7 +26,7 @@ class FileHandler(object):
             print(ex)
             raise
 
-    def load_cipher_text_as_bytes_from_file(self, filename):
+    def read_file_as_bytes(self, filename):
         cipher_textfile = self.__set_absolute_path(filename)
         try:
             with open(cipher_textfile, 'r') as cipher_text:

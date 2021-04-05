@@ -150,7 +150,7 @@ class CryptoModule(Converter, Decrypter, Encrypter, FileHandler):
                     [tried_key, rating, plain_text])
 
                 output_array = sorted(
-                    output_array, key=lambda k: k[1], reverse=True)
+                    output_array, key=lambda k: k[1], reverse=True)[:3]
             else:
                 continue
 

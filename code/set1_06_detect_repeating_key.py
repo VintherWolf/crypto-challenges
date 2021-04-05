@@ -12,7 +12,7 @@ from set1_testdata import set1_06_expected_result
 cm = CryptoModule()
 
 output = ''
-cipher = cm.load_cipher_text_as_bytes_from_file('set1_06_cipher.txt')
+cipher = cm.read_file_as_bytes('set1_06_cipher.txt')
 cipher = cm.convert_base64_to_string_bytes(cipher)
 
 output = cm.break_repeating_key_xor(cipher)

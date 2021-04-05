@@ -66,7 +66,7 @@ class DecrypterTest(unittest.TestCase):
         # Arrange
         test_text = b'this text is awesome, that\'s what she said'
         test_text2 = 'THIS TEXT IS AWESOME, ThAT\'S WhAt sHe sAId'
-        expected_rating = 4.49
+        expected_rating = 4.0
         result = 0
 
         # Act
@@ -106,7 +106,24 @@ class DecrypterTest(unittest.TestCase):
         # Assert
         self.assertEqual(result, expected_xor_output)
     # endregion EqualLengthXOr
+    
+    # region AES_in_ECB_mode
+    def test_easInECBmode_Decrypt_CorrectPlainText(self):
+        from binascii import unhexlify, hexlify
+        # Arrange
+        # test data from https://www.devglan.com/online-tools/aes-encryption-decryption
+        # encrypt: 'testTESTtestTEST'
+        test_data1 = bytes.fromhex('D5119B1375DDCFF464479495F34830D660FA36707E45F499DBA0F25B922301A5')
+        test_key = b'YELLOW SUBMARINE'
+        expected_result = b'testTESTtestTEST'
+        result = b''
 
+        # Act
+        result = self._uut.decrypt_aes_128b_ecb(test_data1, test_key)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+    # endregion AES_in_ECB_mode
 
 if __name__ == '__main__':
     unittest.main()

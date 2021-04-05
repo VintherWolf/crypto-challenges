@@ -11,7 +11,7 @@ import unittest
 from encrypter import Encrypter
 
 
-class ConverterTest(unittest.TestCase):
+class EncrypterTest(unittest.TestCase):
 
     def setUp(self):
         # Arrange
@@ -44,6 +44,21 @@ I go crazy when I hear a cymbal'''
         # Assert
         self.assertEqual(result, expected_result)
 
+# region AES_ECB_MODE
 
+    def test_RepeatingKeyXOrPlain_ValidInput_CorrectCipherText(self):
+        # Arrange
+        test_data1 = b'testTESTtestTEST'
+        test_key = b'YELLOW SUBMARINE'
+        result = b''
+        expected_result = bytes.fromhex('D5119B1375DDCFF464479495F34830D660FA36707E45F499DBA0F25B922301A5')
+        
+        # Act
+        result = self._uut.encrypt_aes_128b_ecb_mode(test_data1, test_key)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+# endregion AES_ECB_MODE
 if __name__ == '__main__':
     unittest.main()

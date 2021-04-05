@@ -14,7 +14,7 @@ cm = CryptoModule()
 
 output = ''
 
-output = cm.encrypt_xor_repeating_key(set1_05_input_data, 'ICE')
+output = cm.encrypt_repeating_key_xor_hex(set1_05_input_data, 'ICE')
 
 print(output)
 
