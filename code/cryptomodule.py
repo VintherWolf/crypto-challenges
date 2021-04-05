@@ -95,7 +95,7 @@ class CryptoModule(Converter, Decrypter, Encrypter, FileHandler):
         cipherlen = len(cipher)
 
         # Try the keys on a relative long part of the cipher text
-        patch_of_cipher = int(round(cipherlen / 4.25, 0))
+        patch_of_cipher = int(round(cipherlen / 10, 0))
 
         for key in range(2, patch_of_cipher):
             acum_distance = 0

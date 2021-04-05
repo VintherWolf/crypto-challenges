@@ -13,7 +13,7 @@ cm = CryptoModule()
 
 output = ''
 cipher = cm.read_file_as_bytes('set1_06_cipher.txt')
-cipher = cm.convert_base64_to_string_bytes(cipher)
+cipher = cm.convert_base64_to_bytes(cipher)
 
 output = cm.break_repeating_key_xor(cipher)
 key = (output[0])[0].decode()

@@ -53,6 +53,7 @@ class Decrypter(object):
                 rating += MOST_FREQUENT_LETTERS.get(char.lower(), 0)
             if char in WIERD_LETTERS:
                 rating += WIERD_LETTERS.get(char.lower(), 0)
+                
 
         for word in COMMON_WORDS:
             if word in text.lower():
@@ -190,8 +191,8 @@ MOST_FREQUENT_LETTERS = {
 
 WIERD_LETTERS = {
     '<': -0.3,   '>': -0.3, '&': -0.2,
-    '\\': -0.3,  '/': -0.3,  '+': -0.3,
-    '"': -0.3
+    '\\': -0.8,  '/': -0.3,  '+': -0.3,
+    '"': -0.3, '*': -1, 
 }
 
 
@@ -199,5 +200,6 @@ WIERD_LETTERS = {
 # Max: 3.6
 COMMON_WORDS = {
     'the':  0.6,    'and':  0.6,
-    'that': 0.8,    'have': 0.8,   'this': 0.8
+    'that': 0.8,    'have': 0.8,   'this': 0.8,
+    'you': 0.8
 }
