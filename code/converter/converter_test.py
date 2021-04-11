@@ -29,7 +29,135 @@ class ConverterTest(unittest.TestCase):
         # Assert
         self.assertEqual(result, expected_result)
 
-    # endregion Convert_HEx_bytes_to_Base64
+
+    def test_SetPadding_NeedOnePadding_PaddingIsOne(self):
+        # Arrange
+        test_string1 = b'49'
+        expected_result = 1
+
+        # Act
+        result = self._uut.is_padding_needed(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_SetPadding_LongInputNeedOnePadding_PaddingIsOne(self):
+        # Arrange
+        test_string1 = b'49abcabcabcabcabcf20d2bacabc1'
+        expected_result = 1
+
+        # Act
+        result = self._uut.is_padding_needed(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_SetPadding_LongInputNeedOnePadding_PaddingIsOne(self):
+        # Arrange
+        test_string1 = b'49abcabcabcabcabcf20d2bacabc1.. '
+        expected_result = 1
+
+        # Act
+        result = self._uut.is_padding_needed(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_SetPadding_NeedTwoPadding_PaddingIsOne(self):
+        # Arrange
+        test_string1 = b'4'
+        expected_result = 2
+
+        # Act
+        result = self._uut.is_padding_needed(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_SetPadding_NeedNoPadding_PaddingIsOne(self):
+        # Arrange
+        test_string1 = b'444'
+        expected_result = 0
+
+        # Act
+        result = self._uut.is_padding_needed(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_SetPadding_WhitespaceNeedNoPadding_PaddingIsOne(self):
+        # Arrange
+        test_string1 = b'   '
+        expected_result = 0
+
+        # Act
+        result = self._uut.is_padding_needed(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+
+    def test_HextoBase64HomeBrew_ValidInput_CorrectBase64Output(self):
+        # Arrange
+        test_string1 = b'Man'
+        expected_result = b'TWFu'
+
+        # Act
+        result = self._uut.convert_hex_to_base64_homebrew(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_HextoBase64HomeBrew_ShortInput_CorrectBase64Output(self):
+        # Arrange
+        test_string1 = b'Ma'
+        expected_result = b'TWE='
+
+        # Act
+        result = self._uut.convert_hex_to_base64_homebrew(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_HextoBase64HomeBrew_VeryShortInput_CorrectBase64Output(self):
+        # Arrange
+        test_string1 = b'M'
+        expected_result = b'TQ=='
+
+        # Act
+        result = self._uut.convert_hex_to_base64_homebrew(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    
+
+    def test_HextoBase64HomeBrew_LongInput_CorrectBase64Output(self):
+        # Arrange
+        test_string1 = b'any carnal pleasure.'
+        expected_result = b'YW55IGNhcm5hbCBwbGVhc3VyZS4='
+
+        # Act
+        result = self._uut.convert_hex_to_base64_homebrew(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_HextoBase64HomeBrew_SemiLongInput_CorrectBase64Output(self):
+        # Arrange
+        test_string1 = b'any carnal pleas'
+        expected_result = b'YW55IGNhcm5hbCBwbGVhcw=='
+
+        # Act
+        result = self._uut.convert_hex_to_base64_homebrew(test_string1)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+
+
+
+    # endregion Convert_Hex_bytes_to_Base64
 
     # region Convert_string_to_Hex_bytes
     def test_ConvertStringToHex_ValidString_CorrectHexBytes(self):
@@ -105,7 +233,7 @@ class ConverterTest(unittest.TestCase):
         expected_result = b'I\'m killing your brain like a poisonous mushroom'
 
         # Act
-        result = self._uut.convert_base64_to_string_bytes(test_b64)
+        result = self._uut.convert_base64_to_bytes(test_b64)
 
         # Assert
         self.assertEqual(result, expected_result)

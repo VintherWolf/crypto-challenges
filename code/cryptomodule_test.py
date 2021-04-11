@@ -87,6 +87,32 @@ class CryptoModuleTest(unittest.TestCase):
         self.assertEqual(key[:3], test_key)
 # endregion BreakRepeatingKeyXOr
 
+# region DetectAES_in_ECB_Mode
+    def test_BreakRepeatingKeyXOr_DetectKeyICE_DecryptsToCorrectPlainText(self):
+        # Arrange    
+        cipher_texts = [
+        'D5119B1375DDCFF464479495F34830D660FA36707E45F499DBA0F25B922301A5', 
+        'D5119B1375DDCFF464479495F34830D660FA36707E45F499DBA0F25B922301A5',
+        'D6119B1375DDCFF464479495F34830D660FA36707E45F499DBA0F25B922301A5'
+        ]
+        testd= []
+
+        for line in cipher_texts:
+            testd.append(bytes.fromhex(line))
+        
+        expected_result = b'testTESTtestTEST'
+        result = []
+        
+        # Act
+        result = self._sut.detect_aes_in_ecb_mode(testd)
+
+        # Assert
+        self.assertEqual(result['plain_text'], expected_result)
+
+# endregion DetectAES_in_ECB_Mode
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

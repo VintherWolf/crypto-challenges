@@ -118,9 +118,11 @@ class Decrypter(object):
         try:
             plain_text = unpad(decipher.decrypt(cipher), AES.block_size)
         except ValueError:
-            print("[Decrypter] AES ECB Mode: Value/Text Error")
+            print("[Decrypter] AES ECB Mode: Value/Text Error (Not ECB Cipher)")
         except KeyError:
             print("[Decrypter] AES ECB Mode: Key Error")
+        #except TypeError:
+        #    print("[Decrypter] AES ECB Mode: Type Error")
 
         return plain_text
 

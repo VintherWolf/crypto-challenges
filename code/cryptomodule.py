@@ -8,6 +8,7 @@
 '''
 
 from itertools import combinations
+from Crypto.Cipher.AES import block_size
 
 from converter.converter import Converter
 from decrypter.decrypter import Decrypter
@@ -155,3 +156,91 @@ class CryptoModule(Converter, Decrypter, Encrypter, FileHandler):
                 continue
 
         return output_array
+
+    # ==========================================
+    # AES ECB Mode, Detect
+    # ==========================================
+
+    def dissect_data_in_block_sized_bites(self, data):
+        # Need: from Crypto.Cipher.AES import block_size
+        data_bites = []
+        
+        for i in range(0, len(data), block_size):
+            data_bites.append(data[i:i + block_size])
+
+        return data_bites
+    
+    def number_of_duplicates_in_datablocks(self, blocks_of_data):
+        repeated = []
+
+        unique_ciphers = set(blocks_of_data)
+        num_of_ciphers = len(blocks_of_data)
+        num_of_unique_ciphers = len(unique_ciphers)
+
+        diff = num_of_ciphers - num_of_unique_ciphers
+
+        if diff > 0:
+            print('AES ECB Mode, Detected. Cipher is repeated ',diff, 'times')
+
+            for i in range(num_of_ciphers):
+                k = i + 1
+
+                for j in range(k, num_of_ciphers):
+                    if blocks_of_data[i] == blocks_of_data[j] and blocks_of_data[i] not in repeated: 
+                        repeated.append(blocks_of_data[i])
+
+            if repeated == []:
+                repeated = None
+        return repeated
+
+    def attempt_to_break_aes_in_ecb_mode(self, data, key=b'YELLOW SUBMARINE'):
+
+        next_result = b''
+        last_result = b''
+
+        plain_text = b''
+
+        keylen = len(key)
+        data_bites = []
+        detected_ecb = ['AEC ECB Mode Ciphers Detected:']
+            
+        data_bites = self.dissect_data_in_block_sized_bites(data)
+
+        detected_ecb.append(self.number_of_duplicates_in_datablocks(data_bites))
+
+        if detected_ecb[1] == []:
+            return None
+
+        '''
+        for block in data_bites:
+            print("Block:", block)
+            if type(block) is int:
+                continue
+            for line in block:
+                print("Line:", line)
+                for i in range(2):
+
+                    next_result = b''
+                    next_result = self.decrypt_aes_128b_ecb(line, key)
+
+                    if last_result != b'':
+
+                        if last_result == next_result:
+                            rating = 0
+                            rating = self.rate_text(next_result)
+                            # Save This result as a possible ecb mode
+                            possible_ecb = {
+                                'cipher': line,
+                                'plain_text': next_result,
+                                'rating': rating
+                            }
+
+                            print("Possible ECB Match Detected: Cipher = ", possible_ecb['cipher'])
+                            detected_ecb.append(possible_ecb)
+
+                    if next_result != b'':
+
+                        last_result = next_result
+        detected_ecb = sorted(detected_ecb, key=lambda k: k['rating'], reverse=True)
+        '''
+        return detected_ecb
