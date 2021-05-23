@@ -29,7 +29,6 @@ class ConverterTest(unittest.TestCase):
         # Assert
         self.assertEqual(result, expected_result)
 
-
     def test_SetPadding_NeedOnePadding_PaddingIsOne(self):
         # Arrange
         test_string1 = b'49'
@@ -96,7 +95,6 @@ class ConverterTest(unittest.TestCase):
         # Assert
         self.assertEqual(result, expected_result)
 
-
     def test_HextoBase64HomeBrew_ValidInput_CorrectBase64Output(self):
         # Arrange
         test_string1 = b'Man'
@@ -130,8 +128,6 @@ class ConverterTest(unittest.TestCase):
         # Assert
         self.assertEqual(result, expected_result)
 
-    
-
     def test_HextoBase64HomeBrew_LongInput_CorrectBase64Output(self):
         # Arrange
         test_string1 = b'any carnal pleasure.'
@@ -154,12 +150,10 @@ class ConverterTest(unittest.TestCase):
         # Assert
         self.assertEqual(result, expected_result)
 
-
-
-
     # endregion Convert_Hex_bytes_to_Base64
 
     # region Convert_string_to_Hex_bytes
+
     def test_ConvertStringToHex_ValidString_CorrectHexBytes(self):
         # Arrange
         test_string1 = 'test'
@@ -239,6 +233,21 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     # endregion Convert_Base64_to_Hex_bytes
+
+    # region Add_PKCS#7 padding
+
+    def test_AddPKCSPaddingToIrregularlySizedPlainText_PlainTexBlockSize(self):
+        # Arrange
+        test_pt = b'YELLOW SUBMARINE'
+        expected_result = b'I\'m killing your brain like a poisonous mushroom'
+
+        # Act
+        result = self._uut.set_pkcs7_padding(test_pt)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    # endregion Add_PKCS#7 padding
 
 
 if __name__ == '__main__':

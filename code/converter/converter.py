@@ -9,6 +9,7 @@
 from base64 import b64encode, b64decode
 from string import ascii_uppercase, ascii_lowercase, digits
 
+
 class Converter(object):
 
     def __init__(self):
@@ -47,18 +48,18 @@ class Converter(object):
         padding = self.is_padding_needed(data)
 
         for byte in data:
-                       
+
             position += 1
-        
+
             if position == 1:
-            # First sextet
+                # First sextet
                 sextet = (byte >> 2)
                 base64_output += self.base64_table[sextet]
                 from_pos1 = (byte & 0b00000011)
                 continue
-            
+
             elif position == 2:
-            # Second sextet
+                # Second sextet
                 sextet = (from_pos1 << 4)
                 sextet |= (byte >> 4)
                 base64_output += self.base64_table[sextet]
@@ -68,7 +69,7 @@ class Converter(object):
 
             elif position == 3:
                 # Third and Fourth sextet
-                sextet = (from_pos2 << 2) 
+                sextet = (from_pos2 << 2)
                 sextet |= (byte >> 6)
                 base64_output += self.base64_table[sextet]
 
@@ -79,31 +80,25 @@ class Converter(object):
                 base64_output += self.base64_table[sextet]
                 position = 0
                 continue
-        
+
         if position == 2:
-                # Third sextet and no more Bytes to convert
-                sextet = (from_pos2 << 2) 
-                sextet |= (0b00000000)
-                base64_output += self.base64_table[sextet]
-        
+            # Third sextet and no more Bytes to convert
+            sextet = (from_pos2 << 2)
+            sextet |= (0b00000000)
+            base64_output += self.base64_table[sextet]
+
         if position == 1:
             # Second sextet and no more Bytes to convert
-                sextet = (from_pos1 << 4)
-                sextet |= (0b00000000)
-                base64_output += self.base64_table[sextet]
-        
+            sextet = (from_pos1 << 4)
+            sextet |= (0b00000000)
+            base64_output += self.base64_table[sextet]
+
         base64_output += (padding * pad)
 
         return base64_output.encode()
 
-
-
-
-
-        
-
     def is_padding_needed(self, data):
-        
+
         pad = b'='
         padding = 0
 
@@ -126,7 +121,16 @@ class Converter(object):
         # will need padding to fit into 6bits x K
         while (len(output)*8) % 6 != 0:
             output += pad
-    
+
+        return output
+
+    def set_pkcs7_padding(self, text):
+        # PKCS#7 padding is described in RFC 5652
+        # https://datatracker.ietf.org/doc/html/rfc5652#section-6.3
+        output = ''
+        padding = hex(4)
+
+        output = padding
         return output
 
     def convert_hex_to_string(self, data):
@@ -174,7 +178,7 @@ class Converter(object):
 
     def convert_bytes_to_pretty_string_output(self, data):
         return data.decode().rstrip()
-    
+
     def convert_bytes_to_pretty_print(self, data):
         print(data.decode().rstrip())
 
@@ -205,4 +209,4 @@ class Converter(object):
     #base64_table = str(ascii_uppercase + ascii_lowercase + digits + '+/').encode()
 
     base64_table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk" \
-                     "lmnopqrstuvwxyz0123456789+/"
+        "lmnopqrstuvwxyz0123456789+/"

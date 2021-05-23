@@ -9,13 +9,19 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 
+
 class Encrypter(object):
 
     def __init__(self):
         pass
 
     def encrypt_repeating_key_xor_hex(self, text, key):
+        """
+        XOR Encrypt text with key byte-by-byte and
+        repeat until end of text
 
+        Text input as hex bytes
+        """
         keylen = len(key)
         output = b''
         text = self.encode_if_needed(text)
@@ -37,7 +43,12 @@ class Encrypter(object):
         return output.hex().strip()
 
     def encrypt_repeating_key_xor_plain(self, text, key):
+        """
+        XOR Encrypt text with key byte-by-byte and
+        repeat until end of text
 
+        Text input as plain text
+        """
         keylen = len(key)
         output = b''
         text = self.encode_if_needed(text)
@@ -66,7 +77,7 @@ class Encrypter(object):
         cipher = AES.new(key, AES.MODE_ECB)
         # Add padding as described in at link:
         # https://www.pycryptodome.org/en/latest/src/cipher/classic.html#ecb-mode
-        return cipher.encrypt(pad(data, AES.block_size))
+        return cipher.encrypt(pad(data, AES.block_size, style='pkcs7'))
 
     # ==========================================
     # Aggregate Methods
