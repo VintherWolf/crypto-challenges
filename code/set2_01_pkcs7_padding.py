@@ -16,7 +16,6 @@ def set_pkcs7_padding(text, block_size):
 def evaluate_padding_need(text, block_size):
 
     padding_len = 0
-    block_size = block_size
     text_len = len(text)
 
     while (text_len % block_size != 0):
