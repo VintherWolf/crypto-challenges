@@ -80,6 +80,27 @@ class Encrypter(object):
         return cipher.encrypt(pad(data, AES.block_size, style='pkcs7'))
 
     # ==========================================
+    # AES CBC Mode
+    # ==========================================
+    def xor_data(self, bin_data_1, bin_data_2):
+        return bytes([b1 ^ b2 for b1, b2 in zip(bin_data_1, bin_data_2)])
+
+    def encrypt_aes_128b_cbc_mode(self, data, key, iv):
+
+        output = b''
+
+        for i in range(0, len(data), AES.block_size):
+            this_block = set_pkcs7_padding(
+                data[i:i + AES.block_size], AES.block_size)
+            block_cipher_input = self.xor_data(this_block, prev)
+            encrypted_block = self.encrypt_aes_128b_ecb_mode(
+                block_cipher_input, key)
+            output += encrypted_block
+            prev = encrypted_block
+
+        return output
+
+    # ==========================================
     # Aggregate Methods
     # ==========================================
 
@@ -88,3 +109,24 @@ class Encrypter(object):
             return input_data.encode()
         else:
             return input_data
+
+    def set_pkcs7_padding(self, text, block_size):
+        output = ''
+        padding = bytes.fromhex('04')
+
+        padding_len = evaluate_padding_need(text, block_size)
+        padding *= padding_len
+        text = text + padding
+
+        return text
+
+    def evaluate_padding_need(self, text, block_size):
+
+        padding_len = 0
+        text_len = len(text)
+
+        while (text_len % block_size != 0):
+            text_len += 1
+            padding_len += 1
+
+        return padding_len

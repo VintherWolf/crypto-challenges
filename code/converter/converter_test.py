@@ -234,21 +234,6 @@ class ConverterTest(unittest.TestCase):
 
     # endregion Convert_Base64_to_Hex_bytes
 
-    # region Add_PKCS#7 padding
-
-    def test_AddPKCSPaddingToIrregularlySizedPlainText_PlainTexBlockSize(self):
-        # Arrange
-        test_pt = b'YELLOW SUBMARINE'
-        expected_result = b'I\'m killing your brain like a poisonous mushroom'
-
-        # Act
-        result = self._uut.set_pkcs7_padding(test_pt)
-
-        # Assert
-        self.assertEqual(result, expected_result)
-
-    # endregion Add_PKCS#7 padding
-
 
 if __name__ == '__main__':
     unittest.main()

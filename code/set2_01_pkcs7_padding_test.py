@@ -2,7 +2,7 @@
 # PKCS7 Padding
 import unittest
 
-from s201_pkcs7_padding import set_pkcs7_padding
+from set2_01_pkcs7_padding import set_pkcs7_padding
 
 
 class PaddingTest(unittest.TestCase):

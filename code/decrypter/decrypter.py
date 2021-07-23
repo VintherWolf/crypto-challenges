@@ -53,7 +53,6 @@ class Decrypter(object):
                 rating += MOST_FREQUENT_LETTERS.get(char.lower(), 0)
             if char in WIERD_LETTERS:
                 rating += WIERD_LETTERS.get(char.lower(), 0)
-                
 
         for word in COMMON_WORDS:
             if word in text.lower():
@@ -91,7 +90,6 @@ class Decrypter(object):
         data_in2 = self.validate_data_input(data_in2)
 
         if len(data_in1) != len(data_in2):
-            # TODO log error inputs must be equal length
             Exception("Input must be equal lengths")
             exit - 1
         else:
@@ -100,6 +98,9 @@ class Decrypter(object):
             output = hex(data_in1 ^ data_in2)[2:].encode()
 
         return output
+
+    def xor_data(self, bin_data_1, bin_data_2):
+        return bytes([b1 ^ b2 for b1, b2 in zip(bin_data_1, bin_data_2)])
 
     # ==========================================
     # AES ECB Mode
@@ -121,10 +122,28 @@ class Decrypter(object):
             print("[Decrypter] AES ECB Mode: Value/Text Error (Not ECB Cipher)")
         except KeyError:
             print("[Decrypter] AES ECB Mode: Key Error")
-        #except TypeError:
+        # except TypeError:
         #    print("[Decrypter] AES ECB Mode: Type Error")
 
         return plain_text
+
+    # ==========================================
+    # AES CBC Mode
+    # ==========================================
+
+    def aes_cbc_decrypt(self, data, key, iv, unpad=True):
+        output = b''
+        prev = iv
+
+        # Process the decryption block by block
+        for i in range(0, len(data), AES.block_size):
+            this_block = data[i:i + AES.block_size]
+            decrypted_block = self.decrypt_aes_128b_ecb(this_block, key)
+            output += self.xor_data(prev, decrypted_block)
+            prev = this_block
+
+        # Return the plaintext either unpadded or left with the padding depending on the unpad flag
+        return pkcs7_unpad(output) if unpad else output
 
     # ==========================================
     # Aggregate Methods
@@ -194,7 +213,7 @@ MOST_FREQUENT_LETTERS = {
 WIERD_LETTERS = {
     '<': -0.3,   '>': -0.3, '&': -0.2,
     '\\': -0.8,  '/': -0.3,  '+': -0.3,
-    '"': -0.3, '*': -1, 
+    '"': -0.3, '*': -1,
 }
 
 
